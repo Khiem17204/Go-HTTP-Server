@@ -63,7 +63,7 @@ func handle_connection(conn net.Conn) {
 		data := strings.Trim(string(buffer[len(buffer)-1]), "\x00")
 		file_name := strings.TrimPrefix(path, "/files/")
 		_ = os.WriteFile(dir+file_name, []byte(data), 0644)
-		conn.Write([]byte("HTTP/1.1 201 OK\r\n\r\n"))
+		conn.Write([]byte("HTTP/1.1 201 Created\r\n\r\n"))
 	} else {
 		conn.Write([]byte("HTTP/1.1 404 Not Found\r\n\r\n"))
 	}
