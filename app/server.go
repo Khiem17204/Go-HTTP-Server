@@ -48,6 +48,15 @@ func handle_connection(conn net.Conn) {
 	} else if strings.Split(path, "/")[1] == "user-agent" {
 		user_agent_val := strings.TrimPrefix(user_agent, "User-Agent: ")
 		conn.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(user_agent_val), user_agent_val)))
+	} else if strings.Split(path, "/")[1] == "files" {
+		dir := os.Args[2]
+		file_name := strings.TrimPrefix(path, "/files/")
+		data, err := os.ReadFile(dir + file_name)
+		if err != nil {
+			conn.Write([]byte("HTTP/1.1 404 Not Found\r\n\r\n"))
+		} else {
+			conn.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: %d\r\n\r\n%s", len(data), data)))
+		}
 	} else {
 		conn.Write([]byte("HTTP/1.1 404 Not Found\r\n\r\n"))
 	}
