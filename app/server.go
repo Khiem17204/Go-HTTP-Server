@@ -59,10 +59,10 @@ func handle_connection(conn net.Conn) {
 			conn.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: %d\r\n\r\n%s", len(data), data)))
 		}
 	} else if strings.Split(path, "/")[1] == "files" && method == "POST" {
-		dir := os.Args[2]
+		// dir := os.Args[2]
 		data := strings.Trim(string(buffer[len(buffer)-1]), "\x00")
 		file_name := strings.TrimPrefix(path, "/files/")
-		_ = os.WriteFile(dir+file_name, []byte(data), 0644)
+		_ = os.WriteFile(file_name, []byte(data), 0644)
 		conn.Write([]byte("HTTP/1.1 201 Created\r\n\r\n"))
 	} else {
 		conn.Write([]byte("HTTP/1.1 404 Not Found\r\n\r\n"))
