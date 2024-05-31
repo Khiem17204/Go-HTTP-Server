@@ -36,9 +36,9 @@ func handle_connection(conn net.Conn) {
 		fmt.Println("Error reading request: ", err.Error())
 		return
 	}
-
-	req_line := strings.Split(string(buffer), "\r\n")[0]
-	user_agent := strings.Split(string(buffer), "\r\n")[2]
+	buffer_list := strings.Split(string(buffer), "\r\n")
+	req_line := buffer_list[0]
+	user_agent := buffer_list[2]
 	path := strings.Split(req_line, " ")[1]
 	method := strings.Split(req_line, " ")[0]
 	if path == "/" {
@@ -59,10 +59,10 @@ func handle_connection(conn net.Conn) {
 			conn.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: %d\r\n\r\n%s", len(data), data)))
 		}
 	} else if strings.Split(path, "/")[1] == "files" && method == "POST" {
-		// dir := os.Args[2]
-		data := strings.Trim(string(buffer[len(buffer)-1]), "\x00")
+		dir := os.Args[2]
+		data := strings.Trim(buffer_list[len(buffer_list)], "\x00")
 		file_name := strings.TrimPrefix(path, "/files/")
-		_ = os.WriteFile(file_name, []byte(data), 0644)
+		_ = os.WriteFile(dir+file_name, []byte(data), 0644)
 		conn.Write([]byte("HTTP/1.1 201 Created\r\n\r\n"))
 	} else {
 		conn.Write([]byte("HTTP/1.1 404 Not Found\r\n\r\n"))
