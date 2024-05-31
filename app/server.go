@@ -60,7 +60,7 @@ func handle_connection(conn net.Conn) {
 		}
 	} else if strings.Split(path, "/")[1] == "files" && method == "POST" {
 		dir := os.Args[2]
-		data := strings.Trim(buffer_list[len(buffer_list)], "\x00")
+		data := strings.Trim(buffer_list[len(buffer_list)-1], "\x00")
 		file_name := strings.TrimPrefix(path, "/files/")
 		_ = os.WriteFile(dir+file_name, []byte(data), 0644)
 		conn.Write([]byte("HTTP/1.1 201 Created\r\n\r\n"))
