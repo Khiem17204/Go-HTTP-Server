@@ -39,10 +39,9 @@ func handle_connection(conn net.Conn) {
 	buffer_list := strings.Split(string(buffer), "\r\n")
 	req_line := buffer_list[0]
 	user_agent := buffer_list[2]
-	media_type := buffer_list[4]
+	media_type := buffer_list[3]
 	path := strings.Split(req_line, " ")[1]
 	method := strings.Split(req_line, " ")[0]
-	fmt.Println("buffer: ", buffer_list)
 	if path == "/" {
 		conn.Write([]byte("HTTP/1.1 200 OK\r\n\r\n"))
 	} else if strings.Split(path, "/")[1] == "echo" {
