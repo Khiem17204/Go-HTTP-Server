@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"compress/gzip"
 	"fmt"
 	"net"
 	"os"
@@ -47,8 +49,14 @@ func handle_connection(conn net.Conn) {
 	} else if strings.Split(path, "/")[1] == "echo" {
 		message := strings.Split(path, "/")[2]
 		encoding := strings.Split(encoding_type, " ")
+
+		var temp_buffer bytes.Buffer
+		enc := gzip.NewWriter(&temp_buffer)
+		_, _ = enc.Write([]byte(message))
+		_ = enc.Close()
+
 		if len(encoding) > 1 && strings.Contains(encoding_type, "gzip") {
-			conn.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
+			conn.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip\r\nContent-Length: %d\r\n\r\n%s", len(temp_buffer.String()), temp_buffer.String())))
 		} else {
 			conn.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
 		}
