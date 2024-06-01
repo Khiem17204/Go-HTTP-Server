@@ -19,6 +19,7 @@ Open a terminal or command prompt and navigate to your project directory.
 Run the server with the following command:
 
 **./your_server.sh**
+
 By default, the server will listen on http://localhost:4221. You can change the port by modifying the PORT constant in the server.go file.
 
 ## Usage
