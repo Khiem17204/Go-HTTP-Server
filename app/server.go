@@ -48,7 +48,7 @@ func handle_connection(conn net.Conn) {
 		message := strings.Split(path, "/")[2]
 		fmt.Println("media: ", media_type)
 		if strings.TrimPrefix(media_type, "Accept-Encoding: ") == "gzip" {
-			conn.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
+			conn.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
 		} else {
 			conn.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
 		}
