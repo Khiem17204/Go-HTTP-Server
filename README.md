@@ -5,8 +5,11 @@ This is a simple HTTP server written in Go programming language from scratch, wi
 The server listens for incoming HTTP requests on a specified port and handles the following routes:
 
 GET /: Returns a simple "Hello, World!" message.
+
 GET /echo/message=<message>: Returns the provided message in the response body(support gzip compression).
+
 GET /files/<filename>: Reads the files in the system and return its content in the response
+
 POST /files/<filename>: Sends a file to the server
 
 ## Prerequisites
