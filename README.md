@@ -1,38 +1,28 @@
-[![progress-banner](https://backend.codecrafters.io/progress/http-server/59de4e15-2b0d-4b1f-bcba-4ca435347116)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+# Go Basic HTTP Server
+This is a simple HTTP server written in Go programming language from scratch, without using any third-party libraries or frameworks.
 
-This is a starting point for Go solutions to the
-["Build Your Own HTTP server" Challenge](https://app.codecrafters.io/courses/http-server/overview).
+## Overview
+The server listens for incoming HTTP requests on a specified port and handles the following routes:
 
-[HTTP](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) is the
-protocol that powers the web. In this challenge, you'll build a HTTP/1.1 server
-that is capable of serving multiple clients.
+GET /: Returns a simple "Hello, World!" message.
+GET /echo/message=<message>: Returns the provided message in the response body(support gzip compression).
+GET /files/<filename>: Reads the files in the system and return its content in the response
+POST /files/<filename>: Sends a file to the server
 
-Along the way you'll learn about TCP servers,
-[HTTP request syntax](https://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html),
-and more.
+## Prerequisites
+To run this server, you need to have Go installed on your machine. You can download and install Go from the official website: https://golang.org/dl/
+Getting Started
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
+Clone this repository or create a new Go project.
+Copy the main.go file into your project directory.
+Open a terminal or command prompt and navigate to your project directory.
+Run the server with the following command:
 
-# Passing the first stage
+**./your_server.sh**
+By default, the server will listen on http://localhost:4221. You can change the port by modifying the PORT constant in the server.go file.
 
-The entry point for your HTTP server implementation is in `app/server.go`. Study
-and uncomment the relevant code, and push your changes to pass the first stage:
+## Usage
+Once the server is running, you can send HTTP requests using tools like curl, a web browser, or a dedicated testing tool like Postman.
 
-```sh
-git add .
-git commit -m "pass 1st stage" # any msg
-git push origin master
-```
-
-Time to move on to the next stage!
-
-# Stage 2 & beyond
-
-Note: This section is for stages 2 and beyond.
-
-1. Ensure you have `go (1.19)` installed locally
-1. Run `./your_server.sh` to run your program, which is implemented in
-   `app/server.go`.
-1. Commit your changes and run `git push origin master` to submit your solution
-   to CodeCrafters. Test output will be streamed to your terminal.
+## Recognition
+This is a challenge of [CodeCrafters](https://codecrafters.io/), feel free to check out others challenges!
