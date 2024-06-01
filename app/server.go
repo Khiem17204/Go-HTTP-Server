@@ -39,7 +39,7 @@ func handle_connection(conn net.Conn) {
 	buffer_list := strings.Split(string(buffer), "\r\n")
 	req_line := buffer_list[0]
 	user_agent := buffer_list[2]
-	media_type := buffer_list[3]
+	media_type := buffer_list[4]
 	path := strings.Split(req_line, " ")[1]
 	method := strings.Split(req_line, " ")[0]
 	if path == "/" {
@@ -47,7 +47,8 @@ func handle_connection(conn net.Conn) {
 	} else if strings.Split(path, "/")[1] == "echo" {
 		message := strings.Split(path, "/")[2]
 		fmt.Println("media: ", media_type)
-		if strings.TrimPrefix(media_type, "Accept-Encoding: ") == "gzip" {
+		fmt.Println("Request:", string(buffer))
+		if strings.Split(media_type, " ")[1] == "gzip" {
 			conn.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
 		} else {
 			conn.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
