@@ -39,15 +39,15 @@ func handle_connection(conn net.Conn) {
 	buffer_list := strings.Split(string(buffer), "\r\n")
 	req_line := buffer_list[0]
 	user_agent := buffer_list[2]
-	media_type := buffer_list[2]
+	encoding_type := buffer_list[2]
 	path := strings.Split(req_line, " ")[1]
 	method := strings.Split(req_line, " ")[0]
 	if path == "/" {
 		conn.Write([]byte("HTTP/1.1 200 OK\r\n\r\n"))
 	} else if strings.Split(path, "/")[1] == "echo" {
 		message := strings.Split(path, "/")[2]
-		media := strings.Split(media_type, " ")
-		if len(media) > 1 && media[1] == "gzip" {
+		encoding := strings.Split(encoding_type, " ")
+		if len(encoding) > 1 && strings.Contains(encoding_type, "gzip") {
 			conn.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Encoding: gzip\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
 		} else {
 			conn.Write([]byte(fmt.Sprintf("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", len(message), message)))
